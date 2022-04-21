@@ -8,6 +8,8 @@ This compose example will provide:
 - back-end: [Postgrest](https://postgrest.org/) backend
 - database: [PostgreSQL](https://www.postgresql.org/) server
 
+![Architecture schema](architecture.png)
+
 # Structure
 
     ├── db
