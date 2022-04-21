@@ -16,13 +16,17 @@
     ├── nginx
     │   ├── certs            # SSL certificates for localhost
     │   └── nginx.conf
+    ├── web                  # Web project root path
+    │   └── dist             # Build path used by nginx to serve web assets
     └── README.md
+    
 
 # Exposes
-- :80 redirects to :443
-- :443 exposes HTTPS routes:
-  - Postgrest API on /api path
-  - nginx served files on other paths
+
+- http://localhost redirecting automatically to 443 port
+- https://localhost with following routes:
+  - `/api`: postgrest API on /api path
+  - `/` all assets available in web/dist directory
 
 # Installation
 ## Create and install certificate
@@ -40,6 +44,35 @@
 ## List APIs
 
 Postgrest API are here: https://localhost/api
+
+## Add a web project
+
+You can use the web framework of your choice.
+
+The only thing you need is to put your built web assets into the `web/dist` directory.
+
+### Example with vite and react
+
+Here we show how to integrate a [reactJS](http://reactjs.org) project using [viteJs](https://vitejs.dev):
+
+     # Create the project
+     yarn create vite web --template react
+     
+     # Build it
+     cd web
+     
+     # Download dependencies
+     yarn
+
+You can use the dev mode and have a server outside of the docker fullstack with:
+
+    yarn dev # exposes http://localhost:3000
+
+Or you can build the web application to let nginx serve the assets:
+
+     yarn build # access your application through https://localhost
+
+Don't forget to rerun `yarn build` every time you want to update the assets for nginx.
 
 ## Connect to database
 
@@ -82,3 +115,7 @@ You can list the new book with: https://localhost/api/books
 # Documentation
 
 - nginx with SSL: https://betterprogramming.pub/docker-powered-web-development-utilizing-https-and-local-domain-names-a57f129e1c4d
+
+
+# TODO
+- explain front usage
