@@ -1,10 +1,12 @@
-# Content
+# Fullstack docker compose
 
-- Front: a nginx server to 
+This compose example will provide:
+
+- front-end: [nginx](https://nginx.org/en/) server to 
   - serve frontend assets
   - forward requests to the backend
-- Back: a Postgrest backend
-- Data: a PostgreSQL server
+- back-end: [Postgrest](https://postgrest.org/) backend
+- database: [PostgreSQL](https://www.postgresql.org/) server
 
 # Structure
 
@@ -28,14 +30,14 @@
   - `/api`: postgrest API on /api path
   - `/` all assets available in web/dist directory
 
-# Installation
+# Configuration
 ## Create and install certificate
 
     cd nginx/cert
     mkcert localhost
     mkcert install
 
-## Start the stack
+# Start the stack
 
     POSTGRES_PASSWORD=AZERTY docker-compose up
 
@@ -70,13 +72,15 @@ You can use the dev mode and have a server outside of the docker fullstack with:
 
 Or you can build the web application to let nginx serve the assets:
 
-     yarn build # access your application through https://localhost
+    yarn build # access your application through https://localhost
 
 Don't forget to rerun `yarn build` every time you want to update the assets for nginx.
 
 ## Connect to database
 
-  docker exec -it docker-fullstack_db_1 psql -h localhost postgres postgres
+You can connect a psql client to your db:
+
+    docker exec -it docker-fullstack_db_1 psql -h localhost postgres postgres
 
 ## Add a SQL script to be run on the first database start
 
@@ -90,19 +94,19 @@ Place your `myscript.sql` file in `db/runtime` and run:
 
 ## Reset totally the database
 
-  sudo rm -rf db/data/pgdata
+    sudo rm -rf db/data/pgdata
 
-## Example
+## Step by step example
 
-Create a file `db/runtime/books.sql` with:
+Create a migration file `db/runtime/books.sql` with:
   
     CREATE TABLE IF NOT EXISTS books (title text);
 
-Run this script:
+Run this migration file against the database:
   
     docker exec -it docker-fullstack_db_1 psql -h localhost postgres postgres -f /runtime-scripts/books.sql
 
-Postgrest API are now up to date, and contain the new books entity: https://localhost/api
+Postgrest API is now up to date, and contains the new `books` entity: https://localhost/api
 
 But for now, there are no books: https://localhost/api/books
 
@@ -115,7 +119,3 @@ You can list the new book with: https://localhost/api/books
 # Documentation
 
 - nginx with SSL: https://betterprogramming.pub/docker-powered-web-development-utilizing-https-and-local-domain-names-a57f129e1c4d
-
-
-# TODO
-- explain front usage
