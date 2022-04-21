@@ -1,9 +1,17 @@
 # Content
 
+- Front: a nginx server to 
+  - serve frontend assets
+  - forward requests to the backend
+- Back: a Postgrest backend
+- Data: a PostgreSQL server
+
+# Structure
+
     ├── db
-    │   ├── data             # All database data (need root rights)
-    │   ├── init             # Put SQL scripts to be run on the first DB startup
-    │   └── runtime          # Add migrations here, see below how to run them
+    │   ├── data             # Database data (need root rights to see files)
+    │   ├── init             # Custom scripts to be run on the 1st DB startup
+    │   └── runtime          # Custom migrations
     ├── docker-compose.yml   # Structure the whole application
     ├── nginx
     │   ├── certs            # SSL certificates for localhost
@@ -45,7 +53,7 @@ Put your sql script in `db/init` directory
 
 Place your `myscript.sql` file in `db/runtime` and run:
 
-  docker exec -it docker-fullstack_db_1 psql -h localhost postgres postgres -f /runtime-scripts/myscript.sql
+    docker exec -it docker-fullstack_db_1 psql -h localhost postgres postgres -f /runtime-scripts/myscript.sql
 
 ## Reset totally the database
 
